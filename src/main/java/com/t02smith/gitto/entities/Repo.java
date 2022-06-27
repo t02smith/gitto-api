@@ -2,6 +2,7 @@ package com.t02smith.gitto.entities;
 
 import com.t02smith.gitto.dto.DTO;
 import com.t02smith.gitto.dto.RepoDTO;
+import com.t02smith.gitto.entities.blobs.CommitBlob;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,6 +21,10 @@ public class Repo implements DTO<RepoDTO> {
 
     @Column(nullable = false)
     private String name;
+
+    @OneToOne
+    @JoinColumn(name = "head_commit", nullable = false)
+    private CommitBlob head;
 
     public Repo(String name) {
         this.name = name;
