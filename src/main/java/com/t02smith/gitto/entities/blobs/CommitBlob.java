@@ -1,5 +1,7 @@
 package com.t02smith.gitto.entities.blobs;
 
+import com.t02smith.gitto.dto.DTO;
+import com.t02smith.gitto.dto.blobs.CommitBlobDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @EqualsAndHashCode @ToString
 @AllArgsConstructor @NoArgsConstructor
-public class CommitBlob {
+public class CommitBlob implements DTO<CommitBlobDTO> {
 
     @Id
     @Column(name = "hash", nullable = false, updatable = false, unique = true)
@@ -32,4 +34,9 @@ public class CommitBlob {
     @OneToOne
     @JoinColumn(name = "tree", updatable = false, nullable = false)
     private TreeBlob tree;
+
+    @Override
+    public CommitBlobDTO toDTO() {
+        return new CommitBlobDTO(hash, author, message, parent.getHash(), timestamp, tree.getHash());
+    }
 }
