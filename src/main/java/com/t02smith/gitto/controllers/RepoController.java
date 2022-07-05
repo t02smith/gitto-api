@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("api/v1/{userName}")
 public class RepoController {
 
     private final RepoService service;
@@ -20,10 +20,10 @@ public class RepoController {
         this.service = service;
     }
 
-    @GetMapping(path = "{repoName}")
-    public ResponseEntity<RepoDTO> getRepositoryByName(@PathVariable(name="repoName") String repoName) {
-        return service.getRepoByName(repoName)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+//    @GetMapping(path = "{repoName}")
+//    public ResponseEntity<RepoDTO> getRepositoryByName(@PathVariable(name="repoName") String repoName) {
+//        return service.getRepoByName(repoName)
+//                .map(ResponseEntity::ok)
+//                .orElseGet(() -> ResponseEntity.notFound().build());
+//    }
 }

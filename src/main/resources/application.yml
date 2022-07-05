@@ -1,0 +1,20 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/gitto
+    username: gitto
+    password: gitto
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    user:
+      name: dev
+      password: dev

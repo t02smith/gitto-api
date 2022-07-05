@@ -26,6 +26,10 @@ public class Repo implements DTO<RepoDTO> {
     @JoinColumn(name = "head_commit", nullable = false)
     private CommitBlob head;
 
+    @ManyToOne
+    @JoinColumn(name = "owner")
+    private AppUser owner;
+
     public Repo(String name) {
         this.name = name;
     }
