@@ -8,15 +8,32 @@ import com.t02smith.gitto.repositories.AppUserRepository;
 import com.t02smith.gitto.requests.AppUserRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 
 @Service
 @AllArgsConstructor
 @Slf4j
-public class AppUserService {
+public class AppUserService implements UserDetailsService {
 
     private final AppUserRepository userRepository;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        var user = userRepository.findAppUserByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+
+        return new User(user.getUsername(), user.getPassword(), new ArrayList<>());
+    }
 
     @Transactional
     public void registerUser(AppUserRequest user) throws DuplicateUserDetailsException {
@@ -28,7 +45,7 @@ public class AppUserService {
             throw new DuplicateUserDetailsException(String.format("Email '%s' already taken", user.email()));
 
         userRepository.save(
-                new AppUser(user.firstName(), user.surname(), user.username(), user.email(), user.password())
+                new AppUser(user.firstName(), user.surname(), user.username(), user.email(), passwordEncoder.encode(user.password()))
         );
     }
 

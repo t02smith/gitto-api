@@ -26,7 +26,7 @@ public class AppUserController {
         }
     }
 
-    @GetMapping(path = "{username}")
+    @GetMapping(path = "users/{username}")
     public ResponseEntity<AppUserDTO> getUser(@PathVariable("username") String username) {
         try {
             return ResponseEntity.ok(userService.getUserByUsername(username));
